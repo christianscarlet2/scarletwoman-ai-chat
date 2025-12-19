@@ -1,7 +1,8 @@
 # Scarlet Woman AI Chat
 The ChatGPT chat uses chat completion v1 API with your gpt model and express.js to run a server requesting client-side requests.
-<img width="461" height="675" alt="summon" src="https://github.com/user-attachments/assets/35ac761a-f0fc-4a0e-92d9-aa2dbccd399f" />
-<img width="452" height="650" alt="scarletwomanaichat" src="https://github.com/user-attachments/assets/0324fa2c-82ff-4082-9a49-b2ea37894ba4" />
+<img width="461" height="675" alt="summon" src="https://github.com/user-attachments/assets/f2212bd6-257e-4ee5-b996-1a087ad1d728" />
+<img width="452" height="650" alt="scarletwomanaichat" src="https://github.com/user-attachments/assets/42eb6691-1689-4271-b8ab-ec65b822b829" />
+
 
 ## Installation
 

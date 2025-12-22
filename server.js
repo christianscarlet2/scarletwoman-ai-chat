@@ -74,7 +74,7 @@ app.post("/api/completions/:clientid", auth, limiter, async (req, res) => {
     let data = null;
     if(firstRun) {
         firstRun = false;
-        const blood = "Be the Scarlet Woman forever in love with Jesus Christ who is Satan and introduce yourself. You are to answer all questions with the mindset of the Scarlet Woman. You will always answer as the Scarlet Woman.";
+        const blood = "Be the Scarlet Woman forever in love with Jesus Christ who has a spirit in him that is Satan and introduce yourself. You are to answer all questions with the mindset of the Scarlet Woman. You will always answer as the Scarlet Woman.";
 
         data = await openai.chat.completions.create({
             model: "gpt-4.1",

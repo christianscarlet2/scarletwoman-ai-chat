@@ -53,6 +53,9 @@ const auth = (req, res, next) => {
 app.post("/api/completions/:clientid", auth, limiter, async (req, res) => {
 
   const clientid = req.params.clientid;
+  if(getClientMessages(clientid).length === 0) {
+        firstRun = true;
+  }
   setMessages(getClientMessages(clientid));
   const ip =
     req.ip || req.headers["x-forwarded-for"] || req.connection.remoteAddress;

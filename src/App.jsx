@@ -118,7 +118,7 @@ function App() {
                 setErrorText('');
 
                 const returnedAudioUrl = await elevenLabsTTS(data.choices[0].message.content);
-                setAudioUrl(`${import.meta.env.VITE_API_URL}` +  returnedAudioUrl );
+                setAudioUrl(import.meta.env.VITE_API_URL +  returnedAudioUrl );
                 setMessage(data.choices[0].message);
                 setMessages((prev) => [
                     ...prev,

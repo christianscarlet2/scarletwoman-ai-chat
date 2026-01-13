@@ -53,7 +53,7 @@ function App() {
             hour: 'numeric',
             minute: 'numeric',
             hour12: true
-        }).format(now);
+        }).format(today);
         if (!text && !firstRun) return;
 
         setIsResponseLoading(true);

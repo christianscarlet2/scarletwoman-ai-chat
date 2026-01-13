@@ -194,7 +194,6 @@ function App() {
                 content: text,
                 audioUrl: null,
             };
-            console.log(audioUrl);
             const responseMessage = {
                 title: currentTitle,
                 role: message.role,

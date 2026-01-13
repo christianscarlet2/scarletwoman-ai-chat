@@ -123,7 +123,7 @@ function App() {
                 setMessages((prev) => [
                     ...prev,
                     { role: "user", content: text, audioUrl: null },
-                    { role: "assistant", content: data.choices[0].message.content, audioUrl: audioUrl },
+                    { role: "assistant", content: data.choices[0].message.content, audioUrl: `${import.meta.env.VITE_API_URL}` + audioUrl },
                 ]);
                 setTimeout(() => {
                     scrollToLastItem.current?.lastElementChild?.scrollIntoView({

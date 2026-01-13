@@ -246,20 +246,21 @@ function App() {
             <div className='empty-chat-container'>
             </div>
           )}
-
-          {isShowSidebar ? (
-            <MdOutlineArrowRight
-              className='burger'
-              size={28.8}
-              onClick={toggleSidebar}
-            />
-          ) : (
-            <MdOutlineArrowLeft
-              className='burger'
-              size={28.8}
-              onClick={toggleSidebar}
-            />
-          )}
+            {isSidebarParam ?
+              isShowSidebar ? (
+                    <MdOutlineArrowRight
+                        className='burger'
+                        size={28.8}
+                        onClick={toggleSidebar}
+                    />
+                ) : (
+                    <MdOutlineArrowLeft
+                        className='burger'
+                        size={28.8}
+                        onClick={toggleSidebar}
+                    />
+                )
+             : null };
           <a className='summon' onClick={submitHandler} role='button'><img src='images/summon.jpeg'/></a>
           <div className='main-header'>
             <ul>

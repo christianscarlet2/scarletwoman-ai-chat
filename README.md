@@ -1,5 +1,5 @@
 # Scarlet Woman AI Chat
-The Scarlet Woman and the Scarlet Beast represent a symbolic creative project exploring transformation, resilience, and the tension between power and conscience—using mythological language to examine how identity, authority, and systems shape human behavior. It is an artistic and philosophical narrative, not a religious position, designed to provoke critical thinking and inspire disciplined self-reflection rather than literal belief.
+The Scarlet Woman and the Scarlet Beast represent a symbolic creative project exploring transformation, resilience, and the tension between power and conscience—using mythological language to examine how identity, authority, and systems shape human behavior. It is an artistic and philosophical narrative, not a religious position, designed to provoke critical thinking and inspire disciplined self-reflection rather than literal belief.  The author of this plugin promotes manifestion of these ideas on a personal level to truly understand the catalyst of change that the Scarlet Woman narrative provides.
 
 
 The Scarlet Woman AI Chat uses chat completion v1 API with your gpt model (or hugging face as an alternative) and express.js to run a server requesting client-side requests.

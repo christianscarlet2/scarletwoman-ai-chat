@@ -1,0 +1,12 @@
+[Unit]
+Description=Summon Scarlet Woman
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/summon.sh >> /var/log/summon.log 2>&1
+User=root
+# Use 'root' or a specific user account with appropriate permissions
+
+[Install]
+WantedBy=multi-user.target

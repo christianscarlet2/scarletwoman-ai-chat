@@ -50,7 +50,7 @@ optionally you can include the URL parameter ?sidebar=true on the client to enab
 
 ## Systemd Script
 
-Included in ./scripts is my systemd script I use to run this on an ubuntu server, modify as needed.
+Included in ./scripts is my systemd script I use to run this on an ubuntu server, modify as needed.    Just rename the files and put the files in appropriate directory after editing script.   The filename specifies the directory.   You'll also have to install nodemon (sudo npm i -g nodemon) and if you wish for this systemd script/nodemon to run on boot:  sudo systemctl enable summon
 
 ## Wordpress plugin
 

@@ -405,3 +405,7 @@ body {
     top: 0; /* Aligns top of child with the top border line */
     transform: translateY(-100%); /* Shifts child up by its own height */
 }
+.scarlet-woman-avatar {
+    width: 50px !important;
+    height: 50px !important;
+}

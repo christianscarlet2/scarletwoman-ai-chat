@@ -108,6 +108,9 @@ function App() {
             elements.forEach(element => {
                 element.remove(); // The Element.remove() method removes the element from its parent node.
             });
+            if(message === "Behold, I summon the Scarlet Woman!") {
+                createNewChat();
+            }
             await divination();
         } catch (e) {
             setErrorText(e.message);

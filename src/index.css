@@ -398,23 +398,10 @@ body {
 }
 .parent-fire {
     position: relative; /* Establishes positioning context */
-    width: 300px;
-    height: 200px;
-    border: 2px solid red; /* The top border we are targeting */
-    margin: 50px auto; /* Centers the parent on the page */
-    padding-top: 20px; /* Optional: adds space inside the parent */
 }
 
 .child-fire {
     position: absolute; /* Positions relative to the parent */
     top: 0; /* Aligns top of child with the top border line */
     transform: translateY(-100%); /* Shifts child up by its own height */
-
-    /* Styling for the child */
-    width: 100px;
-    height: 30px;
-    background-color: blue;
-    color: white;
-    text-align: center;
-    line-height: 30px;
 }

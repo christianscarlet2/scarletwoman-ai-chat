@@ -225,11 +225,11 @@ function App() {
     //makeFlame();
     return (
         <>
-            <div className="container">
+            {/*<div className="container">
                 <svg xmlns="http://www.w3.org/2000/svg" id="svg" width="400"
                      height="800" preserveAspectRatio viewBox="0 0 400 800">
                 </svg>
-            </div>
+            </div>*/}
             <div className='container'>
                 <section className={`sidebar ${isShowSidebar ? 'open' : ''} ${isSidebarParam ? 'sidebar-param' : ''}`}>
                     <div className='sidebar-header' onClick={createNewChat} role='button'>

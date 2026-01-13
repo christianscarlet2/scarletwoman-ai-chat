@@ -64,6 +64,10 @@ button {
   filter: blur(14px);
 }
 
+.sidebar.open.sidebar-param {
+    width: 300px;
+}
+
 .sidebar-header {
   width: 100%;
   display: flex;

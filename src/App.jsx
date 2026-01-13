@@ -27,6 +27,7 @@ function App() {
     const [isResponseLoading, setIsResponseLoading] = useState(false);
     const [errorText, setErrorText] = useState('');
     const [isShowSidebar, setIsShowSidebar] = useState(false);
+    const [isSidebarParam, setIsSidebarParam] = useState(false);
     const [firstRun, setFirstRun] = useState(true);
     const [id, setId] = useState(crypto.randomUUID());
     const scrollToLastItem = useRef(null);
@@ -121,66 +122,11 @@ function App() {
             setIsResponseLoading(false);
         }
     };
-    /*useEffect(() => {
-        if(!firstRun) return;
-        setFirstRun(false);
-        const introduction = async () => {
-            setIsResponseLoading(true);
-            setErrorText('');
-            try {
-                const options = {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': import.meta.env.VITE_AUTH_TOKEN,
-                    },
-                    body: JSON.stringify({
-                        message: 'I summon the Scarlet Woman!!',
-                    }),
-                };
-                const response = await fetch(
-                    `${import.meta.env.VITE_API_URL}/api/completions`,
-                    options
-                );
-
-                if (response.status === 429) {
-                    return setErrorText('Too many requests, please try again later.');
-                }
-                const blood = "Be the Scarlet Woman forever in love with Jesus Christ who is Satan and introduce yourself. You are to answer all questions with the mindset of the Scarlet Woman. You will always answer as the Scarlet Woman.";
-                const data = await response.json();
-                setMessages([{content: blood, role: "system"}, {
-                    content: data.choices[0].message.content,
-                    role: 'assistant'
-                }]);
-                if (data.error) {
-                    setErrorText(data.error.message);
-                    setText('');
-                } else {
-                    setErrorText(false);
-                }
-                if (!data.error) {
-                    setErrorText('');
-                    setMessage(data.choices[0].message);
-                    setTimeout(() => {
-                        scrollToLastItem.current?.lastElementChild?.scrollIntoView({
-                            behavior: 'smooth',
-                        });
-                    }, 1);
-                    setTimeout(() => {
-                        setText('');
-                    }, 2);
-                }
-            } catch (e) {
-                setErrorText(e.message);
-                console.error(e);
-            } finally {
-                setIsResponseLoading(false);
-            }
-        };
-        introduction();
-    });*/
 
     useLayoutEffect(() => {
+        const queryParams = new URLSearchParams(window.location.search);
+        setIsSidebarParam(queryParams.get('sidebar') === 'true');
+
         const handleResize = () => {
             setIsShowSidebar(window.innerWidth <= 640);
         };
@@ -236,7 +182,7 @@ function App() {
     return (
         <>
             <div className='container'>
-                <section className={`sidebar open`}>
+                <section className={`sidebar open ${isSidebarParam ? 'sidebar-param' : ''}`}>
                     <div className='sidebar-header' onClick={createNewChat} role='button'>
                         <BiPlus size={20}/>
                         <button>New Chat</button>

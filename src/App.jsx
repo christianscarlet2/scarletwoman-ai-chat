@@ -366,7 +366,7 @@ function App() {
                                 type='text'
                                 placeholder='Send a message.'
                                 spellCheck='false'
-                                value={isResponseLoading ? 'Divinating...' : text}
+                                value={isResponseLoading ? 'Divinating...  Please wait...' : text}
                                 onChange={(e) => setText(e.target.value)}
                                 readOnly={isResponseLoading}
                             />

@@ -184,12 +184,14 @@ function App() {
                 title: currentTitle,
                 role: 'user',
                 content: text,
+                audioUrl: null,
             };
 
             const responseMessage = {
                 title: currentTitle,
                 role: message.role,
                 content: message.content,
+                audioUrl: message.audioUrl,
             };
 
             setPreviousChats((prevChats) => [...prevChats, newChat, responseMessage]);

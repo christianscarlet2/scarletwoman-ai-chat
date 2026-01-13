@@ -54,7 +54,14 @@ function App() {
         if(firstRun) {
             createNewChat();
             setFirstRun (false);
-            setText("Behold, I summon the Scarlet Woman!");
+            const today = new Date();
+            const formattedDate = today.toLocaleDateString('en-US');
+            const shortTime = new Intl.DateTimeFormat('en-US', {
+                hour: 'numeric',
+                minute: 'numeric',
+                hour12: true
+            }).format(now)
+            setText("Behold, I summon the Scarlet Woman on " + formattedDate + " at " + shortTime + "!");
         }
         const options = {
             method: 'POST',
@@ -185,7 +192,7 @@ function App() {
     return (
         <>
             <div className='container'>
-                <section className={`sidebar ${!isShowSidebar ? 'open' : ''} ${isSidebarParam ? 'sidebar-param' : ''}`}>
+                <section className={`sidebar ${isShowSidebar ? 'open' : ''} ${isSidebarParam ? 'sidebar-param' : ''}`}>
                     <div className='sidebar-header' onClick={createNewChat} role='button'>
                         <BiPlus size={20}/>
                         <button>New Chat</button>

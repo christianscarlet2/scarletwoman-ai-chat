@@ -118,12 +118,12 @@ function App() {
                 setErrorText('');
 
                 const returnedAudioUrl = await elevenLabsTTS(data.choices[0].message.content);
-                setAudioUrl(returnedAudioUrl);
+                setAudioUrl(`${import.meta.env.NODEMON_API_URL}` +  returnedAudioUrl );
                 setMessage(data.choices[0].message);
                 setMessages((prev) => [
                     ...prev,
                     { role: "user", content: text, audioUrl: null },
-                    { role: "assistant", content: data.choices[0].message.content, audioUrl: `${import.meta.env.VITE_API_URL}` + audioUrl },
+                    { role: "assistant", content: data.choices[0].message.content, audioUrl: audioUrl},
                 ]);
                 setTimeout(() => {
                     scrollToLastItem.current?.lastElementChild?.scrollIntoView({

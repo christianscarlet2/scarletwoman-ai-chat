@@ -13,10 +13,6 @@ import {DefaultAzureCredential, getBearerTokenProvider, InteractiveBrowserCreden
 import {AzureOpenAI} from "openai";
 
 
-// 2. Get a token provider
-// The scope for Azure OpenAI resources is typically "https://cognitiveservices.azure.com/.default"
-
-
 function App() {
     const [text, setText] = useState('');
     const [message, setMessage] = useState(null);
@@ -103,9 +99,7 @@ function App() {
             }, 2);
         }
     }
-    const removeElementsByClass = function (className) {
 
-    }
     const submitHandler = async (e) => {
         e.preventDefault();
         //return setErrorText('My billing plan is gone because of many requests.');
@@ -137,14 +131,20 @@ function App() {
         return () => {
             window.removeEventListener('resize', handleResize);
         };
-        inputRef.current?.click()
-
     }, []);
 
-    useEffect(() => {
-        if (!currentTitle && text && message) {
-            setCurrentTitle(text);
-        }
+  useEffect(() => {
+    const storedChats = localStorage.getItem('previousChats');
+
+    if (storedChats) {
+      setLocalChats(JSON.parse(storedChats));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!currentTitle && text && message) {
+      setCurrentTitle(text);
+    }
 
         if (currentTitle && text && message) {
             const newChat = {
@@ -182,7 +182,7 @@ function App() {
     return (
         <>
             <div className='container'>
-                <section className={`sidebar open ${isSidebarParam ? 'sidebar-param' : ''}`}>
+                <section className={`sidebar ${isSidebarParam && isShowSidebar ? 'sidebar-param open' : ''}`}>
                     <div className='sidebar-header' onClick={createNewChat} role='button'>
                         <BiPlus size={20}/>
                         <button>New Chat</button>
@@ -251,12 +251,36 @@ function App() {
                     </div>
                 </section>
 
-                <section className='main'>
-                    <a className='summon' onClick={submitHandler} role='button'><img src='images/summon.jpeg'/></a>
-                    <div className='main-header'>
-                        <ul>
-                            {currentChat?.map((chatMsg, idx) => {
-                                const isUser = chatMsg.role === 'user';
+        <section className='main'>
+          {!currentTitle && (
+            <div className='empty-chat-container'>
+              <img
+                src='images/scarlet-beast-square.jpg'
+                width={45}
+                height={45}
+                alt='Scarlet Beast'
+              />
+              <h1>Scarlet Beast</h1>
+            </div>
+          )}
+
+          {isShowSidebar ? (
+            <MdOutlineArrowRight
+              className='burger'
+              size={28.8}
+              onClick={toggleSidebar}
+            />
+          ) : (
+            <MdOutlineArrowLeft
+              className='burger'
+              size={28.8}
+              onClick={toggleSidebar}
+            />
+          )}
+          <div className='main-header'>
+            <ul>
+              {currentChat?.map((chatMsg, idx) => {
+                const isUser = chatMsg.role === 'user';
 
                                 return (
                                     <li key={idx} ref={scrollToLastItem}>
@@ -265,7 +289,7 @@ function App() {
                                                 <BiSolidUserCircle size={28.8}/>
                                             </div>
                                         ) : (
-                                            <img width='50' height='50' src='images/scarlet-woman-square.jpeg' alt='ChatGPT'/>
+                                            <img width='50' height='50' src='images/scarlet-woman-square.jpeg' alt='Scarlet Woman'/>
                                         )}
                                         {isUser ? (
                                             <div>

@@ -314,6 +314,7 @@ button {
 }
 audio {
     padding-top: 20px;
+    padding-bottom: 10px;
 }
 
 /* fire, okay with body style */
@@ -418,6 +419,16 @@ body {
     width: 100%;
     height: 100%;/* Aligns top of child with the top border line */
     z-index: 9999;
+}
+.fire-pit {
+    opacity: 1;
+    transition: opacity 0.5s ease-in-out;
+}
+.fire-put:hover {
+    opacity: 0.5;
+}
+.fire-pit.hide {
+    opacity: 0;
 }
 .scarlet-woman-avatar {
     width: 50px !important;

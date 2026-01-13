@@ -118,7 +118,7 @@ function App() {
             setMessages((prev) => [
                 ...prev,
                 { role: "user", content: text },
-                { role: "assistant", content: data.choices[0].message.content, audioUrl: data.audioUrl },
+                { role: "assistant", content: data.choices[0].message.content, audioUrl: audioUrl },
             ]);
             setTimeout(() => {
                 scrollToLastItem.current?.lastElementChild?.scrollIntoView({

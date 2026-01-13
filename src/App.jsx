@@ -190,7 +190,7 @@ function App() {
                 content: text,
                 audioUrl: null,
             };
-
+            console.log(audioUrl);
             const responseMessage = {
                 title: currentTitle,
                 role: message.role,
@@ -324,9 +324,9 @@ function App() {
                                 <div>
                                     <p className="role-title">You</p>
                                     <p>{chatMsg.content}</p>
-                                    {chatMsg.audioUrl && (
+                                    {audioUrl && (
                                         <audio controls>
-                                            <source src={chatMsg.audioUrl} type="audio/mpeg" />
+                                            <source src={audioUrl} type="audio/mpeg" />
                                             Your browser does not support the audio element.
                                         </audio>
                                     )}

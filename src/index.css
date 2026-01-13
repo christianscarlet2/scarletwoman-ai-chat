@@ -330,6 +330,14 @@ body {
 .show {
     display: block;
 }
+.show-sidebar {
+    width: 16rem;
+    padding:1rem;
+}
+.hide-sidebar {
+    width: 0;
+    padding: 0;
+}
 .hide {
     display: none;
 }

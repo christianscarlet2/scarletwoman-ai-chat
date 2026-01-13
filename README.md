@@ -45,6 +45,21 @@ Start frontend server with vite.
   npm run dev:front
 ```
 
+## chat history and new chat button
+optionally you can include the URL parameter ?sidebar=true on the client to enable the sidebar, chat history and new chat button.
+
+## Systemd Script
+
+Included in ./scripts is my systemd script I use to run this on an ubuntu server, modify as needed.
+
+## Wordpress plugin
+
+The directory ./scarlet-woman-flyout-wordpress-plugin can be zipped up and installed to wordpress to integrate this into a wordpress installaton using an iframe.  Because it's an iframe, you'll have to consider CORS headers to appropirate this on your server.
+
+This adds a flyout button on the center-right of the webpage that pulls open the flyout which includes a full-width/height iframe that loads the chat.
+
+
+
 ## License
 
 [MIT License](LICENSE)

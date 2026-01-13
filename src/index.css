@@ -327,16 +327,17 @@ body {
 .mo-fire {
     position: absolute;
 }
-.mo-fire.show {
+.show {
     display: block;
 }
-.mo-fire.hide {
+.hide {
     display: none;
 }
 .mo-fire svg {
     width: 100%;
     height: 100%;
-    position: relative
+    position: relative;
+    opacity: .35;
 }
 .flame {
     animation-name: flamefly;

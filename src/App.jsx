@@ -290,7 +290,9 @@ function App() {
                 </section>
 
                 <section className='main parent-fire'>
-                    <Fire className={isResponseLoading ? 'show' : 'hide'}/>
+                    <div className={isResponseLoading ? 'show' : 'hide'}>
+                        <Fire />
+                    </div>
                     {!currentTitle && (
                         <div className='empty-chat-container'>
                         </div>

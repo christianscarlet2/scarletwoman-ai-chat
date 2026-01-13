@@ -230,7 +230,7 @@ function App() {
                 </svg>
             </div>*/}
             <div className='container'>
-                <section className={`sidebar ${isShowSidebar ? 'open' : ''} ${isSidebarParam ? 'sidebar-param' : ''}`}>
+                <section className={`sidebar ${isShowSidebar ? 'open' : ''} ${isSidebarParam ? 'show' : 'hide'}`}>
                     <div className='sidebar-header' onClick={createNewChat} role='button'>
                         <BiPlus size={20}/>
                         <button>New Chat</button>

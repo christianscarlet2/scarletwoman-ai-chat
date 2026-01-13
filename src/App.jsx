@@ -346,7 +346,7 @@ function App() {
                                                         Your browser does not support the audio element.
                                                     </audio>
                                                 )}
-                                                <p>Take the Essence of Love with you, call me now at +1 866.695.1750 and press 1.</p>
+                                                <p className={'scarlet'}>Take the Essence of Love with you, call <strong>*me*</strong> now at <strong className={'white'}>+1 866.695.1750</strong> and <strong>press 1. 😍❤️‍🔥</strong></p>
                                             </div>
                                         )}
                                     </li>

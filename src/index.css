@@ -423,7 +423,12 @@ body {
     width: 50px !important;
     height: 50px !important;
 }
-
+.scarlet {
+    color: #ff2400;
+}
+.white {
+    color: #fff;
+}
 /* Extra small devices (phones, less than 576px) */
 @media (max-width: 575.98px) {
     .child-fire {

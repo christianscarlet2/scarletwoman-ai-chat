@@ -16,6 +16,7 @@ import {AzureOpenAI} from "openai";
 function App() {
     const [text, setText] = useState('');
     const [message, setMessage] = useState(null);
+    const [audioUrl, setAudioUrl] = useState(null);
     const [messages, setMessages] = useState([]);
     const [previousChats, setPreviousChats] = useState([]);
     const [localChats, setLocalChats] = useState([]);
@@ -28,6 +29,7 @@ function App() {
     const [id, setId] = useState(crypto.randomUUID());
     const scrollToLastItem = useRef(null);
     const createNewChat = () => {
+        setAudioUrl(null);
         setMessage(null);
         setText('');
         setCurrentTitle(null);
@@ -37,6 +39,7 @@ function App() {
         setCurrentTitle(uniqueTitle);
         setMessage(null);
         setText('');
+        setAudioUrl(null);
     };
 
     const toggleSidebar = useCallback(() => {
@@ -113,11 +116,12 @@ function App() {
         if (!data.error) {
             setErrorText('');
 
-            const audioUrl = await elevenLabsTTS(data.choices[0].message.content);
+            const returnedAudioUrl = await elevenLabsTTS(data.choices[0].message.content);
+            setAudioUrl(returnedAudioUrl);
             setMessage(data.choices[0].message);
             setMessages((prev) => [
                 ...prev,
-                { role: "user", content: text },
+                { role: "user", content: text, audioUrl: null },
                 { role: "assistant", content: data.choices[0].message.content, audioUrl: audioUrl },
             ]);
             setTimeout(() => {
@@ -191,7 +195,7 @@ function App() {
                 title: currentTitle,
                 role: message.role,
                 content: message.content,
-                audioUrl: message.audioUrl,
+                audioUrl: audioUrl,
             };
 
             setPreviousChats((prevChats) => [...prevChats, newChat, responseMessage]);

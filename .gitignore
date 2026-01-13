@@ -1,3 +1,4 @@
+node_modules
 .env
 yarn.lock
 public/generated_audio/*.mp3

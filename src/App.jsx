@@ -239,28 +239,11 @@ function App() {
                             </>
                         )}
                     </div>
-                    <div className='sidebar-info'>
-                        <div className='sidebar-info-upgrade'>
-                            <BiUser size={20}/>
-                            <p>Upgrade plan</p>
-                        </div>
-                        <div className='sidebar-info-user'>
-                            <BiSolidUserCircle size={20}/>
-                            <p>User</p>
-                        </div>
-                    </div>
                 </section>
 
         <section className='main'>
           {!currentTitle && (
             <div className='empty-chat-container'>
-              <img
-                src='images/scarlet-beast-square.jpg'
-                width={45}
-                height={45}
-                alt='Scarlet Beast'
-              />
-              <h1>Scarlet Beast</h1>
             </div>
           )}
 

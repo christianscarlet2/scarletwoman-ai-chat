@@ -54,6 +54,7 @@ function App() {
         if(firstRun) {
             setFirstRun (false);
             setText("Behold, I summon the Scarlet Woman!");
+            createNewChat();
         }
         const options = {
             method: 'POST',
@@ -108,9 +109,7 @@ function App() {
             elements.forEach(element => {
                 element.remove(); // The Element.remove() method removes the element from its parent node.
             });
-            if(message === "") {
-                createNewChat();
-            }
+
             await divination();
         } catch (e) {
             setErrorText(e.message);

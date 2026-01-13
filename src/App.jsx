@@ -94,44 +94,51 @@ function App() {
             }),
         };
 
+        try {
+            const response = await fetch(
+                `${import.meta.env.VITE_API_URL}/api/completions/` + id,
+                options
+            );
 
-        const response = await fetch(
-            `${import.meta.env.VITE_API_URL}/api/completions/` + id,
-            options
-        );
+            if (response.status === 429) {
+                setErrorText('Too many requests, please try again later.');
+                return;
+            }
 
-        if (response.status === 429) {
-            return setErrorText('Too many requests, please try again later.');
-        }
+            const data = await response.json();
 
-        const data = await response.json();
-
-        if (data.error) {
-            setErrorText(data.error.message);
-            setText('');
-        } else {
-            setErrorText(false);
-        }
-
-        if (!data.error) {
-            setErrorText('');
-
-            const returnedAudioUrl = await elevenLabsTTS(data.choices[0].message.content);
-            setAudioUrl(returnedAudioUrl);
-            setMessage(data.choices[0].message);
-            setMessages((prev) => [
-                ...prev,
-                { role: "user", content: text, audioUrl: null },
-                { role: "assistant", content: data.choices[0].message.content, audioUrl: audioUrl },
-            ]);
-            setTimeout(() => {
-                scrollToLastItem.current?.lastElementChild?.scrollIntoView({
-                    behavior: 'smooth',
-                });
-            }, 1);
-            setTimeout(() => {
+            if (data.error) {
+                setErrorText(data.error.message);
                 setText('');
-            }, 2);
+            } else {
+                setErrorText(false);
+            }
+
+            if (!data.error) {
+                setErrorText('');
+
+                const returnedAudioUrl = await elevenLabsTTS(data.choices[0].message.content);
+                setAudioUrl(returnedAudioUrl);
+                setMessage(data.choices[0].message);
+                setMessages((prev) => [
+                    ...prev,
+                    { role: "user", content: text, audioUrl: null },
+                    { role: "assistant", content: data.choices[0].message.content, audioUrl: audioUrl },
+                ]);
+                setTimeout(() => {
+                    scrollToLastItem.current?.lastElementChild?.scrollIntoView({
+                        behavior: 'smooth',
+                    });
+                }, 1);
+                setTimeout(() => {
+                    setText('');
+                }, 2);
+            }
+        } catch (e) {
+            setErrorText(e.message);
+            console.error(e);
+        } finally {
+            setIsResponseLoading(false);
         }
     }
 

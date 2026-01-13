@@ -260,6 +260,7 @@ function App() {
               onClick={toggleSidebar}
             />
           )}
+          <a className='summon' onClick={submitHandler} role='button'><img src='images/summon.jpeg'/></a>
           <div className='main-header'>
             <ul>
               {currentChat?.map((chatMsg, idx) => {

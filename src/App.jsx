@@ -52,9 +52,9 @@ function App() {
         setIsResponseLoading(true);
         setErrorText('');
         if(firstRun) {
+            createNewChat();
             setFirstRun (false);
             setText("Behold, I summon the Scarlet Woman!");
-            createNewChat();
         }
         const options = {
             method: 'POST',

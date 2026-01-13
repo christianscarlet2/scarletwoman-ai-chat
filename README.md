@@ -58,6 +58,7 @@ The directory ./scarlet-woman-flyout-wordpress-plugin can be zipped up and insta
 
 This adds a flyout button on the center-right of the webpage that pulls open the flyout which includes a full-width/height iframe that loads the chat.
 
+<img width="628" height="602" alt="image" src="https://github.com/user-attachments/assets/047ce90f-8390-48eb-b8be-7fe7a2813a1f" />
 
 
 ## License

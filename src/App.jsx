@@ -138,6 +138,7 @@ function App() {
 
     if (storedChats) {
       setLocalChats(JSON.parse(storedChats));
+      createNewChat();
     }
   }, []);
 
@@ -261,7 +262,7 @@ function App() {
                     />
                 )
              : null };
-          <a className='summon' onClick={createNewChat && submitHandler} role='button'><img src='images/summon.jpeg'/></a>
+          <a className='summon' onClick={submitHandler} role='button'><img src='images/summon.jpeg'/></a>
           <div className='main-header'>
             <ul>
               {currentChat?.map((chatMsg, idx) => {

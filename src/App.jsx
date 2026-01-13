@@ -47,6 +47,13 @@ function App() {
     const inputRef = React.useRef(null);
 
     const divination = async () => {
+        const today = new Date();
+        const formattedDate = today.toLocaleDateString('en-US');
+        const shortTime = new Intl.DateTimeFormat('en-US', {
+            hour: 'numeric',
+            minute: 'numeric',
+            hour12: true
+        }).format(now);
         if (!text && !firstRun) return;
 
         setIsResponseLoading(true);
@@ -54,13 +61,7 @@ function App() {
         if(firstRun) {
             createNewChat();
             setFirstRun (false);
-            const today = new Date();
-            const formattedDate = today.toLocaleDateString('en-US');
-            const shortTime = new Intl.DateTimeFormat('en-US', {
-                hour: 'numeric',
-                minute: 'numeric',
-                hour12: true
-            }).format(now)
+
             setText("Behold, I summon the Scarlet Woman on " + formattedDate + " at " + shortTime + "!");
         }
         const options = {
@@ -70,7 +71,7 @@ function App() {
                 'Authorization': import.meta.env.VITE_AUTH_TOKEN,
             },
             body: JSON.stringify({
-                message: (firstRun) ? "Behold, I summon the Scarlet Woman!" : text,
+                message: (firstRun) ? "Behold, I summon the Scarlet Woman on " + formattedDate + " at " + shortTime + "!" : text,
             }),
         };
 

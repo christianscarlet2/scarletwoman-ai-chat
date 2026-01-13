@@ -1,6 +1,6 @@
 const Fire = ({ isResponseLoading }) => {
     return (
-        <div className={isResponseLoading ? 'show mo-fire child-fire' : 'hide mo-fire child-fire'}>
+        <div className={'mo-fire child-fire'}>
             <svg
                 version="1.1"
                 id="Layer_1"

@@ -5,6 +5,57 @@ import rateLimit from "express-rate-limit";
 import { Resend } from "resend";
 import { OpenAI, AzureOpenAI } from "openai";
 import dotenv from "dotenv";
+import fs from "fs";
+import path from "path";
+import fetch from "node-fetch";
+
+const audioDir = path.join(__dirname, "generated_audio");
+if (!fs.existsSync(audioDir)) {
+    fs.mkdirSync(audioDir);
+}
+
+const generateAudio = async (text, voiceId) => {
+    const apiKey = process.env.ELEVENLABS_API_KEY;
+    const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "xi-api-key": apiKey,
+        },
+        body: JSON.stringify({
+            text,
+            model_id: "eleven_monolingual_v1",
+            voice_settings: {
+                stability: 0.5,
+                similarity_boost: 0.8,
+            },
+        }),
+    });
+
+    if (!response.ok) {
+        throw new Error("Failed to generate audio");
+    }
+
+    const audioBuffer = await response.buffer();
+    const fileName = `${Date.now()}.mp3`;
+    const filePath = path.join(audioDir, fileName);
+    fs.writeFileSync(filePath, audioBuffer);
+
+    return `/generated_audio/${fileName}`;
+};
+
+app.use("/generated_audio", express.static(audioDir));
+
+app.post("/api/generate-audio", async (req, res) => {
+    try {
+        const { text } = req.body;
+        const audioUrl = await generateAudio(text, "mLw8kuDeVGqVstOYjRII");
+        res.json({ audioUrl });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Failed to generate audio" });
+    }
+});
 
 dotenv.config();
 

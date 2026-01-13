@@ -46,6 +46,22 @@ function App() {
 
     const inputRef = React.useRef(null);
 
+    const elevenLabsTTS = async (text) => {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/generate-audio`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ text }),
+        });
+
+        if (!response.ok) {
+            throw new Error("Failed to fetch audio");
+        }
+
+        const data = await response.json();
+        return data.audioUrl;
+    };
     const divination = async () => {
         const today = new Date();
         const formattedDate = today.toLocaleDateString('en-US');
@@ -97,7 +113,8 @@ function App() {
         if (!data.error) {
             setErrorText('');
 
-            setMessage(data.choices[0].message);
+            const audioUrl = await elevenLabsTTS(data.choices[0].message.content);
+            setMessage({ ...data.choices[0].message, audioUrl });
             setTimeout(() => {
                 scrollToLastItem.current?.lastElementChild?.scrollIntoView({
                     behavior: 'smooth',
@@ -275,33 +292,44 @@ function App() {
           <a className='summon' onClick={submitHandler} role='button'><img src='images/summon.jpeg'/></a>
           <div className='main-header'>
             <ul>
-              {currentChat?.map((chatMsg, idx) => {
-                const isUser = chatMsg.role === 'user';
+                {currentChat?.map((chatMsg, idx) => {
+                    const isUser = chatMsg.role === "user";
 
-                                return (
-                                    <li key={idx} ref={scrollToLastItem}>
-                                        {isUser ? (
-                                            <div>
-                                                <BiSolidUserCircle size={28.8}/>
-                                            </div>
-                                        ) : (
-                                            <img width='50' height='50' src='images/scarlet-woman-square.png' alt='Scarlet Woman'/>
-                                        )}
-                                        {isUser ? (
-                                            <div>
-                                                <p className='role-title'>You</p>
-                                                <p>{chatMsg.content}</p>
-                                            </div>
-                                        ) : (
-                                            <div>
-                                                <p className='role-title'>Scarlet Woman</p>
-                                                <p>{chatMsg.content}</p>
-                                            </div>
-                                        )}
-                                    </li>
-                                );
-                            })}
-                        </ul>
+                    return (
+                        <li key={idx} ref={scrollToLastItem}>
+                            {isUser ? (
+                                <div>
+                                    <BiSolidUserCircle size={28.8} />
+                                </div>
+                            ) : (
+                                <img
+                                    width="50"
+                                    height="50"
+                                    src="images/scarlet-woman-square.png"
+                                    alt="Scarlet Woman"
+                                />
+                            )}
+                            {isUser ? (
+                                <div>
+                                    <p className="role-title">You</p>
+                                    <p>{chatMsg.content}</p>
+                                </div>
+                            ) : (
+                                <div>
+                                    <p className="role-title">Scarlet Woman</p>
+                                    <p>{chatMsg.content}</p>
+                                    {chatMsg.audioUrl && (
+                                        <audio controls>
+                                            <source src={chatMsg.audioUrl} type="audio/mpeg" />
+                                            Your browser does not support the audio element.
+                                        </audio>
+                                    )}
+                                </div>
+                            )}
+                        </li>
+                    );
+                })}
+            </ul>
                     </div>
                     <div className='main-bottom'>
                         {errorText && <p className='errorText'>{errorText}</p>}

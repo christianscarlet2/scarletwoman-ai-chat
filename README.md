@@ -48,9 +48,11 @@ Start frontend server with vite.
 ## chat history and new chat button
 optionally you can include the URL parameter ?sidebar=true on the client to enable the sidebar, chat history and new chat button.
 
-## Systemd Script
+## Systemd and Nginx Reverse Proxy Script
 
 Included in ./scripts is my systemd script I use to run this on an ubuntu server, modify as needed.    Just rename the files and put the files in appropriate directory after editing script.   The filename specifies the directory.   You'll also have to install nodemon (sudo npm i -g nodemon) and if you wish for this systemd script/nodemon to run on boot:  sudo systemctl enable summon
+
+Also included is a reverse proxy script for setting up nginx.   Just edit out my details and replace them with yours and appropriate.
 
 ## Wordpress plugin
 

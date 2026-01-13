@@ -182,7 +182,7 @@ function App() {
     return (
         <>
             <div className='container'>
-                <section className={`sidebar ${isSidebarParam && isShowSidebar ? 'sidebar-param open' : ''}`}>
+                <section className={`sidebar ${!isShowSidebar ? 'open' : ''} ${isSidebarParam ? 'sidebar-param' : ''}`}>
                     <div className='sidebar-header' onClick={createNewChat} role='button'>
                         <BiPlus size={20}/>
                         <button>New Chat</button>
@@ -272,7 +272,7 @@ function App() {
                                                 <BiSolidUserCircle size={28.8}/>
                                             </div>
                                         ) : (
-                                            <img width='50' height='50' src='images/scarlet-woman-square.jpeg' alt='Scarlet Woman'/>
+                                            <img width='50' height='50' src='images/scarlet-woman-square.png' alt='Scarlet Woman'/>
                                         )}
                                         {isUser ? (
                                             <div>

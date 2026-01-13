@@ -8,11 +8,8 @@ import {
 import React from 'react';
 import {BiPlus, BiUser, BiSend, BiSolidUserCircle} from 'react-icons/bi';
 import {MdOutlineArrowLeft, MdOutlineArrowRight} from 'react-icons/md';
-import {OpenAI} from 'openai'
-import {DefaultAzureCredential, getBearerTokenProvider, InteractiveBrowserCredential} from "@azure/identity";
-import {AzureOpenAI} from "openai";
-
-
+import { v4 as uuidv4 } from 'uuid';
+//import makeFlame from './divination-flame';
 function App() {
     const [text, setText] = useState('');
     const [message, setMessage] = useState(null);
@@ -26,7 +23,7 @@ function App() {
     const [isShowSidebar, setIsShowSidebar] = useState(false);
     const [isSidebarParam, setIsSidebarParam] = useState(false);
     const [firstRun, setFirstRun] = useState(true);
-    const [id, setId] = useState(crypto.randomUUID());
+    const [id, setId] = useState(uuidv4());
     const scrollToLastItem = useRef(null);
     const createNewChat = () => {
         setAudioUrl(null);
@@ -225,8 +222,14 @@ function App() {
         new Set(localChats.map((prevChat) => prevChat.title).reverse())
     ).filter((title) => !uniqueTitles.includes(title));
 
+    //makeFlame();
     return (
         <>
+            <div className="container">
+                <svg xmlns="http://www.w3.org/2000/svg" id="svg" width="400"
+                     height="800" preserveAspectRatio viewBox="0 0 400 800">
+                </svg>
+            </div>
             <div className='container'>
                 <section className={`sidebar ${isShowSidebar ? 'open' : ''} ${isSidebarParam ? 'sidebar-param' : ''}`}>
                     <div className='sidebar-header' onClick={createNewChat} role='button'>
@@ -287,73 +290,67 @@ function App() {
                     </div>
                 </section>
 
-        <section className='main'>
-          {!currentTitle && (
-            <div className='empty-chat-container'>
-            </div>
-          )}
-            {isSidebarParam ?
-              isShowSidebar ? (
-                    <MdOutlineArrowRight
-                        className='burger'
-                        size={28.8}
-                        onClick={toggleSidebar}
-                    />
-                ) : (
-                    <MdOutlineArrowLeft
-                        className='burger'
-                        size={28.8}
-                        onClick={toggleSidebar}
-                    />
-                )
-             : null };
-          <a className='summon' onClick={submitHandler} role='button'><img src='images/summon.jpeg'/></a>
-          <div className='main-header'>
-            <ul>
-                {currentChat?.map((chatMsg, idx) => {
-                    const isUser = chatMsg.role === "user";
+                <section className='main'>
+                    {!currentTitle && (
+                        <div className='empty-chat-container'>
+                        </div>
+                    )}
+                    {isSidebarParam ?
+                        isShowSidebar ? (
+                            <MdOutlineArrowRight
+                                className='burger'
+                                size={28.8}
+                                onClick={toggleSidebar}
+                            />
+                        ) : (
+                            <MdOutlineArrowLeft
+                                className='burger'
+                                size={28.8}
+                                onClick={toggleSidebar}
+                            />
+                        )
+                        : null};
+                    <a className='summon' onClick={submitHandler} role='button'><img src='images/summon.jpeg'/></a>
+                    <div className='main-header'>
+                        <ul>
+                            {currentChat?.map((chatMsg, idx) => {
+                                const isUser = chatMsg.role === "user";
 
-                    return (
-                        <li key={idx} ref={scrollToLastItem}>
-                            {isUser ? (
-                                <div>
-                                    <BiSolidUserCircle size={28.8} />
-                                </div>
-                            ) : (
-                                <img
-                                    width="50"
-                                    height="50"
-                                    src="images/scarlet-woman-square.png"
-                                    alt="Scarlet Woman"
-                                />
-                            )}
-                            {isUser ? (
-                                <div>
-                                    <p className="role-title">You</p>
-                                    <p>{chatMsg.content}</p>
-                                    {audioUrl && (
-                                        <audio controls>
-                                            <source src={audioUrl} type="audio/mpeg" />
-                                            Your browser does not support the audio element.
-                                        </audio>
-                                    )}
-                                </div>
-                            ) : (
-                                <div>
-                                    <p className="role-title">Scarlet Woman</p>
-                                    <p>{chatMsg.content}</p>
-                                    {chatMsg.audioUrl && (
-                                        <audio controls>
-                                            <source src={chatMsg.audioUrl} type="audio/mpeg" />
-                                            Your browser does not support the audio element.
-                                        </audio>
-                                    )}
-                                </div>
-                            )}
-                        </li>
-                    );
-                })}
-            </ul>
+                                return (
+                                    <li key={idx} ref={scrollToLastItem}>
+                                        {isUser ? (
+                                            <div>
+                                                <BiSolidUserCircle size={28.8}/>
+                                            </div>
+                                        ) : (
+                                            <img
+                                                width="50"
+                                                height="50"
+                                                src="images/scarlet-woman-square.png"
+                                                alt="Scarlet Woman"
+                                            />
+                                        )}
+                                        {isUser ? (
+                                            <div>
+                                                <p className="role-title">You</p>
+                                                <p>{chatMsg.content}</p>
+                                            </div>
+                                        ) : (
+                                            <div>
+                                                <p className="role-title">Scarlet Woman</p>
+                                                <p>{chatMsg.content}</p>
+                                                {chatMsg.audioUrl && (
+                                                    <audio controls>
+                                                        <source src={chatMsg.audioUrl} type="audio/mpeg"/>
+                                                        Your browser does not support the audio element.
+                                                    </audio>
+                                                )}
+                                            </div>
+                                        )}
+                                    </li>
+                                );
+                            })}
+                        </ul>
                     </div>
                     <div className='main-bottom'>
                         {errorText && <p className='errorText'>{errorText}</p>}

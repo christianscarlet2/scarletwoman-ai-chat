@@ -312,3 +312,35 @@ button {
     max-width: 100%;
     height: auto;
 }
+audio {
+    padding-top: 20px;
+}
+.container
+{
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    text-align: center;
+}
+
+svg
+{
+    z-index: 10;
+//filter: blur(1px);
+    height: 100%;
+}
+
+
+
+.stick
+{
+    transform: translatex(100px) translatey(360px);
+//filter: brightness(200%);
+}
+
+.flame
+{
+    mix-blend-mode: screen;
+}

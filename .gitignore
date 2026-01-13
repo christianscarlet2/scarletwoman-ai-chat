@@ -1,3 +1,4 @@
 .env
 yarn.lock
 package-lock.json
+public/generated_audio/*.mp3

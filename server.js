@@ -8,10 +8,15 @@ import dotenv from "dotenv";
 import fs from "fs";
 import path from "path";
 import fetch from "node-fetch";
+import { fileURLToPath } from 'url';
 
-const audioDir = path.join(__dirname, "generated_audio");
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Update the audio directory path
+const audioDir = path.join(__dirname, "public", "generated_audio");
 if (!fs.existsSync(audioDir)) {
-    fs.mkdirSync(audioDir);
+    fs.mkdirSync(audioDir, { recursive: true });
 }
 
 const generateAudio = async (text, voiceId) => {
@@ -44,6 +49,12 @@ const generateAudio = async (text, voiceId) => {
     return `/generated_audio/${fileName}`;
 };
 
+
+dotenv.config();
+
+const app = express();
+app.use(express.json());
+app.use(cors());
 app.use("/generated_audio", express.static(audioDir));
 
 app.post("/api/generate-audio", async (req, res) => {
@@ -56,12 +67,6 @@ app.post("/api/generate-audio", async (req, res) => {
         res.status(500).json({ error: "Failed to generate audio" });
     }
 });
-
-dotenv.config();
-
-const app = express();
-app.use(express.json());
-app.use(cors());
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 

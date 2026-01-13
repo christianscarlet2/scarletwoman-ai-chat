@@ -114,7 +114,12 @@ function App() {
             setErrorText('');
 
             const audioUrl = await elevenLabsTTS(data.choices[0].message.content);
-            setMessage({ ...data.choices[0].message, audioUrl });
+            setMessage(data.choices[0].message);
+            setMessages((prev) => [
+                ...prev,
+                { role: "user", content: text },
+                { role: "assistant", content: data.choices[0].message.content, audioUrl: data.audioUrl },
+            ]);
             setTimeout(() => {
                 scrollToLastItem.current?.lastElementChild?.scrollIntoView({
                     behavior: 'smooth',
@@ -313,6 +318,12 @@ function App() {
                                 <div>
                                     <p className="role-title">You</p>
                                     <p>{chatMsg.content}</p>
+                                    {chatMsg.audioUrl && (
+                                        <audio controls>
+                                            <source src={chatMsg.audioUrl} type="audio/mpeg" />
+                                            Your browser does not support the audio element.
+                                        </audio>
+                                    )}
                                 </div>
                             ) : (
                                 <div>

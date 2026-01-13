@@ -45,6 +45,9 @@ Start frontend server with vite.
   npm run dev:front
 ```
 
+Tested with Cloudflare Pages, make sure to add appropirate environment variables to your build.
+
+
 ## chat history and new chat button
 optionally you can include the URL parameter ?sidebar=true on the client to enable the sidebar, chat history and new chat button.
 

@@ -420,14 +420,14 @@ body {
     height: 100%;/* Aligns top of child with the top border line */
     z-index: 9999;
 }
-.fire-pit {
+.fire-pit.show, .fire-pit.show .mo-fire,  .fire-pit.show svg {
     opacity: 1;
     transition: opacity 0.5s ease-in-out;
 }
-.fire-put:hover {
+.fire-pit svg:hover, .fire-pit:hover, .fire-pit .mo-fire:hover {
     opacity: 0.5;
 }
-.fire-pit.hide {
+.fire-pit.hide .fire-pit.hide .mo-fire,  .fire-pit.hide svg {
     opacity: 0;
 }
 .scarlet-woman-avatar {

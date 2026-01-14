@@ -426,7 +426,7 @@ body {
     transition: opacity 0.5s ease-in-out;
 }
 .fire-pit svg:hover, .fire-pit:hover, .fire-pit .mo-fire:hover {
-    opacity: 0.55;
+    opacity: .65;
 }
 .fire-pit.hide .fire-pit.hide .mo-fire,  .fire-pit.hide svg {
     opacity: 0;

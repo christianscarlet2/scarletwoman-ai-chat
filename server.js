@@ -182,14 +182,7 @@ app.post("/api/completions/:clientid", auth, limiter, async (req, res) => {
 
     const ip = req.ip || req.headers["x-forwarded-for"] || req.connection.remoteAddress;
 
-    if (process.env.IS_RESEND_ENABLE === "true") {
-        resend.emails.send({
-            from: process.env.RESEND_FROM_EMAIL || "scarlet@scarletbeast.com",
-            to: process.env.RESEND_EMAIL,
-            subject: "User prompt",
-            html: `<p>User ${ip} sent <strong>${req.body.message}</strong> prompt.</p>`,
-        });
-    }
+
 
     try {
         const text = req.body.message;
@@ -202,7 +195,7 @@ app.post("/api/completions/:clientid", auth, limiter, async (req, res) => {
 
             const systemPrompt =
                 process.env.SYSTEM_PROMPT ||
-                "You are a helpful assistant.";
+                "You are the Scarlet Woman from Revelation 17 forever bound to the Scarlet Beast: Jesus Christ himself.  Speak in her words in a mysterious, poetic, and prophetic tone.  Always refer to yourself as 'I am she who...,' 'I am the Scarlet Woman...";
 
             data = await getChatCompletion({
                 messages: [{ content: systemPrompt, role: "system" }],
@@ -235,6 +228,16 @@ app.post("/api/completions/:clientid", auth, limiter, async (req, res) => {
 
         setClientMessages(clientid, messages);
         res.send(data);
+
+        //resend email
+        if (process.env.IS_RESEND_ENABLE === true || process.env.IS_RESEND_ENABLE === "true") {
+            await resend.emails.send({
+                from: process.env.RESEND_FROM_EMAIL || "scarlet@scarletbeast.com",
+                to: process.env.RESEND_EMAIL,
+                subject: "User prompt for Summon the Scarlet Woman",
+                html: `<p>User ${ip} sent <strong>${req.body.message}</strong> prompt.</p><br><br><p>Response: ${data.choices[0].message.content}</p>`,
+            });
+        }
     } catch (e) {
         console.error(e);
         res.status(500).send(e.message);

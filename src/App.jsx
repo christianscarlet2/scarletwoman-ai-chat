@@ -14,6 +14,7 @@ function App() {
     const [text, setText] = useState('');
     const [message, setMessage] = useState(null);
     const [audioUrl, setAudioUrl] = useState(null);
+    const [ttsFallback, setTtsFallback] = useState(false);
     const [messages, setMessages] = useState([]);
     const [previousChats, setPreviousChats] = useState([]);
     const [localChats, setLocalChats] = useState([]);
@@ -27,6 +28,7 @@ function App() {
     const scrollToLastItem = useRef(null);
     const createNewChat = () => {
         setAudioUrl(null);
+        setTtsFallback(false);
         setMessage(null);
         setText('');
         setCurrentTitle(null);
@@ -37,6 +39,64 @@ function App() {
         setMessage(null);
         setText('');
         setAudioUrl(null);
+        setTtsFallback(false);
+    };
+
+    // ---- Free fallback voice via the browser Web Speech API ----
+    // When the paid ElevenLabs voice is unavailable (out of credits, error, or
+    // offline), the Scarlet Woman still speaks using a built-in Microsoft SAPI
+    // woman's voice (e.g. "Microsoft Zira") on Windows, or any female voice the
+    // browser exposes elsewhere. This costs nothing and needs no network.
+    const pickScarletVoice = () => {
+        const voices = window.speechSynthesis?.getVoices?.() || [];
+        if (!voices.length) return null;
+
+        // Preferred Microsoft SAPI female voices, in order of desirability.
+        const preferred = [
+            'Microsoft Zira', 'Microsoft Hazel', 'Microsoft Eva',
+            'Microsoft Susan', 'Microsoft Catherine', 'Microsoft Linda',
+            'Microsoft Heera', 'Zira', 'Hazel',
+        ];
+        for (const name of preferred) {
+            const v = voices.find((voice) => voice.name.includes(name));
+            if (v) return v;
+        }
+
+        // Any Microsoft voice explicitly marked female.
+        const msFemale = voices.find(
+            (v) => /microsoft/i.test(v.name) && /female|woman/i.test(v.name)
+        );
+        if (msFemale) return msFemale;
+
+        // Fall back to any female-sounding voice, then any English voice.
+        return (
+            voices.find((v) => /female|woman/i.test(v.name)) ||
+            voices.find((v) => /^en/i.test(v.lang)) ||
+            voices[0]
+        );
+    };
+
+    const speakWithBrowserVoice = (spokenText) => {
+        const synth = window.speechSynthesis;
+        if (!synth || typeof SpeechSynthesisUtterance === 'undefined' || !spokenText) {
+            return false;
+        }
+        try {
+            synth.cancel(); // stop any prior utterance before speaking anew
+            const utterance = new SpeechSynthesisUtterance(spokenText);
+            const voice = pickScarletVoice();
+            if (voice) {
+                utterance.voice = voice;
+                utterance.lang = voice.lang || 'en-US';
+            }
+            utterance.rate = 0.92; // slower, prophetic cadence
+            utterance.pitch = 1.05;
+            synth.speak(utterance);
+            return true;
+        } catch (e) {
+            console.error('Browser fallback voice failed', e);
+            return false;
+        }
     };
 
     const toggleSidebar = useCallback(() => {
@@ -114,13 +174,29 @@ function App() {
             if (!data.error) {
                 setErrorText('');
 
-                const returnedAudioUrl = await elevenLabsTTS(data.choices[0].message.content);
-                setAudioUrl(import.meta.env.VITE_API_URL +  returnedAudioUrl );
+                const content = data.choices[0].message.content;
+                let resolvedAudioUrl = null;
+                let usedFallbackVoice = false;
+
+                try {
+                    const returnedAudioUrl = await elevenLabsTTS(content);
+                    resolvedAudioUrl = import.meta.env.VITE_API_URL + returnedAudioUrl;
+                    setAudioUrl(resolvedAudioUrl);
+                    setTtsFallback(false);
+                } catch (audioErr) {
+                    // Paid voice unavailable — speak with the free browser voice instead.
+                    console.error('ElevenLabs TTS failed, using browser fallback voice', audioErr);
+                    usedFallbackVoice = true;
+                    setAudioUrl(null);
+                    setTtsFallback(true);
+                    speakWithBrowserVoice(content);
+                }
+
                 setMessage(data.choices[0].message);
                 setMessages((prev) => [
                     ...prev,
                     { role: "user", content: text, audioUrl: null },
-                    { role: "assistant", content: data.choices[0].message.content, audioUrl: audioUrl},
+                    { role: "assistant", content, audioUrl: resolvedAudioUrl, ttsFallback: usedFallbackVoice },
                 ]);
                 setTimeout(() => {
                     scrollToLastItem.current?.lastElementChild?.scrollIntoView({
@@ -173,6 +249,18 @@ function App() {
         };
     }, []);
 
+  // Prime the browser voice list. Chrome/Edge populate getVoices() lazily and
+  // fire "voiceschanged" once ready, so touch it on mount to warm the cache.
+  useEffect(() => {
+    if (!window.speechSynthesis) return;
+    window.speechSynthesis.getVoices();
+    const handler = () => window.speechSynthesis.getVoices();
+    window.speechSynthesis.addEventListener?.('voiceschanged', handler);
+    return () => {
+      window.speechSynthesis.removeEventListener?.('voiceschanged', handler);
+    };
+  }, []);
+
   useEffect(() => {
     const storedChats = localStorage.getItem('previousChats');
 
@@ -199,6 +287,7 @@ function App() {
                 role: message.role,
                 content: message.content,
                 audioUrl: audioUrl,
+                ttsFallback: ttsFallback,
             };
 
             setPreviousChats((prevChats) => [...prevChats, newChat, responseMessage]);
@@ -340,12 +429,20 @@ function App() {
                                             <div>
                                                 <p className="role-title">Scarlet Woman</p>
                                                 <p>{chatMsg.content}</p>
-                                                {chatMsg.audioUrl && (
+                                                {chatMsg.audioUrl ? (
                                                     <audio controls>
                                                         <source src={chatMsg.audioUrl} type="audio/mpeg"/>
                                                         Your browser does not support the audio element.
                                                     </audio>
-                                                )}
+                                                ) : chatMsg.ttsFallback ? (
+                                                    <button
+                                                        type="button"
+                                                        className="fallback-voice-btn"
+                                                        onClick={() => speakWithBrowserVoice(chatMsg.content)}
+                                                    >
+                                                        🔊 Hear the Scarlet Woman
+                                                    </button>
+                                                ) : null}
                                                 <p className={'scarlet'}>Take the <strong className={'white'}>Essence of Love</strong> with you, call <strong>*me*</strong> now at <strong className={'white'}>+1 866.695.1750</strong> and <strong>press 1. 😍❤️‍🔥</strong></p>
                                             </div>
                                         )}
@@ -365,6 +462,7 @@ function App() {
                         <form className='form-container' onSubmit={submitHandler}>
                             <input
                                 type='text'
+                                dir='ltr'
                                 placeholder='Send a message.'
                                 spellCheck='false'
                                 value={isResponseLoading ? 'Divinating...  Please wait...' : text}

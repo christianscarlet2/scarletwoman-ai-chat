@@ -5,3 +5,4 @@ public/generated_audio/*.mp3
 
 dist/generated_audio/*.mp3
 *:Zone.Identifier
+dist/generated_audio/
